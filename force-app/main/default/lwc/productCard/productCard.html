@@ -2,6 +2,12 @@
     <lightning-card icon-name="standard:apex_plugin">
         <template if:true={recordId}>
             <span slot="title">{productName}</span>
+            <template if:true={productStock}>
+                <p class="slds-var-m-horizontal_medium">{productStock} available</p>
+            </template>
+            <template if:false={productStock}>
+                <p class="slds-var-m-horizontal_medium">Out of Stock</p>
+            </template>   
             <lightning-button-icon
                 icon-name="utility:expand_alt"
                 slot="actions"
@@ -30,45 +36,50 @@
                         field-name={msrpField}
                     ></lightning-output-field>
 
-                    <section>Electric Components</section>
-                    <lightning-output-field
-                        field-name={batteryField}
-                    ></lightning-output-field>
-                    <lightning-output-field
-                        field-name={chargerField}
-                    ></lightning-output-field>
-                    <lightning-output-field
-                        field-name={motorField}
-                    ></lightning-output-field>
-                    <section>Frame</section>
-                    <lightning-output-field
-                        field-name={materialField}
-                    ></lightning-output-field>
-                    <lightning-output-field
-                        field-name={forkField}
-                    ></lightning-output-field>
+                    <lightning-accordion allow-multiple-sections-open>
+                        <lightning-accordion-section name="electronic-components" label="Electronic Components">
+                            <lightning-output-field
+                                field-name={batteryField}
+                            ></lightning-output-field>
+                            <lightning-output-field
+                                field-name={chargerField}
+                            ></lightning-output-field>
+                            <lightning-output-field
+                                field-name={motorField}
+                            ></lightning-output-field>
+                        </lightning-accordion-section>
+                        <lightning-accordion-section name="frame" label="Frame">
+                            <lightning-output-field
+                                field-name={materialField}
+                            ></lightning-output-field>
+                            <lightning-output-field
+                                field-name={forkField}
+                            ></lightning-output-field>
+                        </lightning-accordion-section>
+                        <lightning-accordion-section name="brakes" label="Brakes">
+                            <div class="slds-form-element slds-form-element_horizontal">
+                                <span class="slds-form-element__label">Front</span>
+                                <div class="slds-form-element__control">
+                                    <lightning-output-field
+                                        field-name={frontBrakesField}
+                                        variant="label-hidden"
+                                        aria-labelledby="Front"
+                                    ></lightning-output-field>
+                                </div>
+                            </div>
 
-                    <section>Brakes</section>
-                    <div class="slds-form-element slds-form-element_horizontal">
-                        <span class="slds-form-element__label">Front</span>
-                        <div class="slds-form-element__control">
-                            <lightning-output-field
-                                field-name={frontBrakesField}
-                                variant="label-hidden"
-                                aria-labelledby="Front"
-                            ></lightning-output-field>
-                        </div>
-                    </div>
-                    <div class="slds-form-element slds-form-element_horizontal">
-                        <span class="slds-form-element__label">Rear</span>
-                        <div class="slds-form-element__control">
-                            <lightning-output-field
-                                field-name={rearBrakesField}
-                                variant="label-hidden"
-                                aria-labelledby="Rear"
-                            ></lightning-output-field>
-                        </div>
-                    </div>
+                            <div class="slds-form-element slds-form-element_horizontal">
+                                <span class="slds-form-element__label">Rear</span>
+                                <div class="slds-form-element__control">
+                                    <lightning-output-field
+                                        field-name={rearBrakesField}
+                                        variant="label-hidden"
+                                        aria-labelledby="Rear"
+                                    ></lightning-output-field>
+                                </div>
+                            </div>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
                 </lightning-record-view-form>
             </div>
         </template>

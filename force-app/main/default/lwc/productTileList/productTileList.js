@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api, wire, track } from 'lwc';
 
 // Ligthning Message Service and message channels
 import { publish, subscribe, MessageContext } from 'lightning/messageService';
@@ -28,7 +28,7 @@ export default class ProductTileList extends LightningElement {
     pageNumber = 1;
 
     /** The number of items on a page. */
-    pageSize;
+    pageSize = 9;   // Changed to 9
 
     /** The total number of items matching the selection. */
     totalItemCount = 0;
@@ -45,9 +45,15 @@ export default class ProductTileList extends LightningElement {
     /**
      * Load the list of available products.
      */
-    @wire(getProducts, { filters: '$filters', pageNumber: '$pageNumber' })
+    @wire(getProducts, { filters: '$filters', pageNumber: '$pageNumber', pageSize: '$pageSize' })
     products;
 
+    @track evtPageSize;
+    handlePageSize(event) {
+        this.evtPageSize='onpagesize'
+        this.pageSize = event.detail.pageSize;
+    }
+    
     connectedCallback() {
         // Subscribe to ProductsFiltered message
         this.productFilterSubscription = subscribe(
@@ -83,4 +89,9 @@ export default class ProductTileList extends LightningElement {
     handleNextPage() {
         this.pageNumber = this.pageNumber + 1;
     }
+
+    handlePageSizeChange() {
+        this.pageSize = Paginator.currentPageSize();
+    }
+
 }

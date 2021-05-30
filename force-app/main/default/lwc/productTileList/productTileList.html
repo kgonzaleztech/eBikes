@@ -31,6 +31,7 @@
                     total-item-count={products.data.totalItemCount}
                     onprevious={handlePreviousPage}
                     onnext={handleNextPage}
+                    onpagesize={handlePageSize}
                 ></c-paginator>
             </template>
             <template if:false={products.data.records.length}>

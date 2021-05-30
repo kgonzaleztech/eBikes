@@ -13,7 +13,7 @@
             </template>
         </lightning-layout-item>
         <lightning-layout-item size="8" class="nav-info">
-            {totalItemCount} items • page {currentPageNumber} of {totalPages}
+            {totalItemCount} items • page {currentPageNumber} of {totalPages} • Items per Page {currentPageSize}
         </lightning-layout-item>
         <lightning-layout-item size="2" class="nav-next">
             <template if:false={isLastPage}>
@@ -24,5 +24,17 @@
                 ></lightning-button-icon>
             </template>
         </lightning-layout-item>
+        <lightning-layout-item size="2" class="nav-next">
+        </lightning-layout-item>
     </lightning-layout>
+    <lightning-layout-item>
+            <lightning-input 
+                type="range"
+                label="Items per Page"
+                value={pageSize}
+                min="1"
+                max={totalItemCount}
+                onchange={handleItemsPerPage}>
+            </lightning-input>
+    </lightning-layout-item>
 </template>

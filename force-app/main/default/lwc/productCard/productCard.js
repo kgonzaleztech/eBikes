@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 
 // Ligthning Message Service and a message channel
 import { NavigationMixin } from 'lightning/navigation';
@@ -7,6 +7,9 @@ import PRODUCT_SELECTED_MESSAGE from '@salesforce/messageChannel/ProductSelected
 
 // Utils to extract field values
 import { getFieldValue } from 'lightning/uiRecordApi';
+
+// HTTP call to get product availability if available
+import getProductAvailability from '@salesforce/apex/ProductController.getProductAvailability';
 
 // Product__c Schema
 import PRODUCT_OBJECT from '@salesforce/schema/Product__c';
@@ -22,6 +25,8 @@ import MATERIAL_FIELD from '@salesforce/schema/Product__c.Material__c';
 import FOPK_FIELD from '@salesforce/schema/Product__c.Fork__c';
 import FRONT_BRAKES_FIELD from '@salesforce/schema/Product__c.Front_Brakes__c';
 import REAR_BRAKES_FIELD from '@salesforce/schema/Product__c.Rear_Brakes__c';
+import FRAME_COLOR_FIELD from '@salesforce/schema/Product__c.Frame_Color__c';
+import JigsawContactId from '@salesforce/schema/Contact.JigsawContactId';
 
 /**
  * Component to display details of a Product__c.
@@ -38,6 +43,7 @@ export default class ProductCard extends NavigationMixin(LightningElement) {
     forkField = FOPK_FIELD;
     frontBrakesField = FRONT_BRAKES_FIELD;
     rearBrakesField = REAR_BRAKES_FIELD;
+    frameColorField = FRAME_COLOR_FIELD;
 
     // Id of Product__c to display
     recordId;
@@ -45,11 +51,12 @@ export default class ProductCard extends NavigationMixin(LightningElement) {
     // Product fields displayed with specific format
     productName;
     productPictureUrl;
+    productStock;
 
-    /** Load context for Ligthning Messaging Service */
+    /** Load context for Lightning Messaging Service */
     @wire(MessageContext) messageContext;
 
-    /** Subscription for ProductSelected Ligthning message */
+    /** Subscription for ProductSelected Lightning message */
     productSelectionSubscription;
 
     connectedCallback() {
@@ -66,6 +73,14 @@ export default class ProductCard extends NavigationMixin(LightningElement) {
         const recordData = records[this.recordId];
         this.productName = getFieldValue(recordData, NAME_FIELD);
         this.productPictureUrl = getFieldValue(recordData, PICTURE_URL_FIELD);
+
+        getProductAvailability({pName: this.productName})
+        .then(response => {
+            this.productStock = JSON.parse(response).currentInventory;
+        })
+        .catch(error => {
+            console.log('Error: Product availability is unavailable.');
+        });
     }
 
     /**

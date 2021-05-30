@@ -69,6 +69,32 @@
                 </template>
             </section>
             <section>
+                <h1>Frame Color</h1>
+                <template if:true={frameColors.data}>
+                    <template
+                        for:each={frameColors.data.values}
+                        for:item="frameColor"
+                    >
+                        <lightning-input
+                            key={frameColor.value}
+                            label={frameColor.label}
+                            data-filter="frameColors"
+                            data-value={frameColor.value}
+                            type="checkbox"
+                            checked
+                            onchange={handleCheckboxChange}
+                        ></lightning-input>
+                    </template>
+                </template>
+                <template if:true={frameColors.error}>
+                    <c-error-panel
+                        type="inlineMessage"
+                        friendly-message="Error loading frame colors"
+                        errors={frameColors.error}
+                    ></c-error-panel>
+                </template>
+            </section>                
+            <section>
                 <h1>Level</h1>
                 <template if:true={levels.data}>
                     <template for:each={levels.data.values} for:item="level">

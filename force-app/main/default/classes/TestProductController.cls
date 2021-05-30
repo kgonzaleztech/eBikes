@@ -35,7 +35,7 @@ public class TestProductController {
         filters.categories = new List<String>{ 'Mountain' };
         filters.levels = new List<String>{ 'Beginner' };
         filters.materials = new List<String>{ 'Carbon' };
-        PagedResult result = ProductController.getProducts(filters, 1);
+        PagedResult result = ProductController.getProducts(filters, 1, 0);
         System.assertEquals(result.records.size(), 2);
     }
 
@@ -47,7 +47,7 @@ public class TestProductController {
         filters.categories = new List<String>{ 'Mountain' };
         filters.levels = new List<String>{ 'Beginner' };
         filters.materials = new List<String>{ 'Carbon' };
-        PagedResult result = ProductController.getProducts(filters, 1);
+        PagedResult result = ProductController.getProducts(filters, 1, 9);
         Product__c productToCompare = (Product__c) result.records[0];
         Product__c[] products = ProductController.getSimilarProducts(
             productToCompare.Id,
