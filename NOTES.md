@@ -22,7 +22,7 @@ Sales Manager (Tom) has requested the following enhancements to the Product Expl
             --header 'Cookie: BrowserId=Jlnf3nImEeumZZ88qOXBuw' \
             --data-raw ''
 
-Step 1
+Steps
 1. I looked to find the component that was handling the filters and I looked at the Product__c object's fields,
 next I looked in dev console to see what the data looked like. I found that there was a field called
 Frame_Color__c that would be the one to use to filter based on frame color. I added code to filter
