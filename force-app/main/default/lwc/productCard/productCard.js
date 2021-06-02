@@ -79,7 +79,8 @@ export default class ProductCard extends NavigationMixin(LightningElement) {
             this.productStock = JSON.parse(response).currentInventory;
         })
         .catch(error => {
-            console.log('Error: Product availability is unavailable.');
+            console.log(`Error: No availability details for ${this.productName} were received.`);
+            this.productStock = 0;  // Set to out of stock if no availability info
         });
     }
 

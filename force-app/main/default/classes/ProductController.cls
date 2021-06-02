@@ -90,8 +90,7 @@ public with sharing class ProductController {
         ];
     }
 
-    @AuraEnabled
-    public static String getProductAvailability(String pName) {
+    public static HttpResponse calloutProductAvailability(String pName) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         String pageName = pName.replaceAll('\\s+','+');
@@ -104,11 +103,18 @@ public with sharing class ProductController {
 
         HttpResponse response = new Http().send(request);
 
+        return response;
+    }
+
+    @AuraEnabled
+    public static String getProductAvailability(String pName) {
+
+        HttpResponse response = calloutProductAvailability(pName);
+
         if (response.getStatusCode() == 200) {
             return response.getBody();
         }
 
         return null;
     }
-
 }
